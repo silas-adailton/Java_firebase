@@ -1,42 +1,40 @@
 import com.google.firebase.database.*;
+import io.reactivex.Completable;
+import io.reactivex.Maybe;
+import io.reactivex.plugins.RxJavaPlugins;
 
 public class UserFirebaseRepository {
 
-    public void setUser() {
+    public Completable setUser() {
         DatabaseReference db = FirebaseDatabase.getInstance()
                 .getReference("user").push();
 
-        new Thread(() -> {
+        return Completable.create(emitter -> {
             db.setValue(User.getMapDefaultUser(), (error, ref1) -> {
                 if (error != null) {
-                    System.out.println(error.getMessage());
+                    emitter.onError(error.toException());
                     return;
                 }
-                System.out.println(ref1.toString());
+                emitter.onComplete();
             });
 
-            try {
-                Thread.sleep(20000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }).start();
+        }).subscribeOn(RxJavaPlugins.createIoScheduler(Thread::new));
     }
 
 
-    public void getUser() {
+    public Maybe<Object> getUser() {
 
         DatabaseReference db = FirebaseDatabase.getInstance()
                 .getReference("user");
 
-        new Thread(() -> {
+        return Maybe.create(emitter -> {
             db.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         User user = snapshot.getValue(User.class);
-                        System.out.println(user);
+                        emitter.onSuccess(user);
+                        emitter.onComplete();
                     }
 
                 }
@@ -44,14 +42,12 @@ public class UserFirebaseRepository {
                 @Override
                 public void onCancelled(DatabaseError error) {
                     System.out.println(error.getMessage());
+                    emitter.onError(error.toException());
+                    emitter.onComplete();
                 }
             });
 
-            try {
-                Thread.sleep(100000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        }).subscribeOn(RxJavaPlugins.createIoScheduler(Thread::new));
+
     }
 }

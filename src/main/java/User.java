@@ -42,23 +42,13 @@ public class User {
         this.name = name;
     }
 
-    public static User getDefaultUser() {
-        User user = new User();
-        user.setAge(5);
-        user.setId(555);
-        user.setImageProfile("klsfjkljfsd");
-        user.setName("TESTE JAVA");
-
-        return user;
-    }
-
     public static Map<String, Object> getMapDefaultUser() {
         Map<String, Object> mapUser = new HashMap<>();
         User user = new User();
-        user.setName("Teste Java 2");
-        user.setId(1500);
-        user.setImageProfile("jdhfjdhf");
-        user.setAge(35);
+        user.setName("Teste Java 4");
+        user.setId(1504);
+        user.setImageProfile("kkkjkjk");
+        user.setAge(4);
 
         mapUser.put("name", user.getName());
         mapUser.put("id", user.getId());

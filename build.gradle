@@ -19,8 +19,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-admin:6.8.1'
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-database:18.0.0'
-    compile group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha0'
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha0'
+    implementation group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha0'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.0'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
